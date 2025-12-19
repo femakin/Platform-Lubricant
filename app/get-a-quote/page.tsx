@@ -1,0 +1,380 @@
+"use client";
+
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import TopBar from "../components/TopBar";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
+import { products } from "../data/products";
+
+function GetAQuoteForm() {
+  const searchParams = useSearchParams();
+  const productSlug = searchParams?.get("product");
+
+  const [formData, setFormData] = useState({
+    productName: "",
+    quantity: "",
+    location: "",
+    companyName: "",
+    phone: "",
+    email: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  // Auto-fill product name if coming from a product page
+  useEffect(() => {
+    if (productSlug) {
+      const product = products.find((p) => p.slug === productSlug);
+      if (product) {
+        setFormData((prev) => ({
+          ...prev,
+          productName: product.name,
+        }));
+      }
+    }
+  }, [productSlug]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    setError("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit quote request");
+      }
+
+      setIsSubmitted(true);
+      setFormData({
+        productName: "",
+        quantity: "",
+        location: "",
+        companyName: "",
+        phone: "",
+        email: "",
+      });
+
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to submit quote request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Get unique product names (excluding category products)
+  const productOptions = products
+    .filter((p) => !p.name.includes("Lubricants") && !p.name.includes("Fluids") && !p.name.includes("Oils") && !p.name.includes("Greases"))
+    .map((p) => p.name);
+
+  return (
+    <div className="min-h-screen bg-[#fefcfc]">
+      <TopBar />
+      <NavBar />
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-[#f78a24] to-[#e67a14] py-12 sm:py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+            Request a Quote
+          </h1>
+          <p className="text-white/90 text-lg sm:text-xl max-w-3xl mx-auto">
+            Get competitive pricing for our premium lubricants. Fill out the form below 
+            and our sales team will contact you within 24 hours.
+          </p>
+        </div>
+      </section>
+
+      {/* Form Section */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 sm:p-10">
+            {isSubmitted ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-8 h-8 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-black mb-2">
+                  Quote Request Submitted!
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Thank you for your interest. Our sales team will contact you within 24 hours.
+                </p>
+                <p className="text-sm text-gray-500">
+                  We'll send you a detailed quote via email and phone.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    {error}
+                  </div>
+                )}
+                <div className="mb-8">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+                    Product Enquiry Form
+                  </h2>
+                  <p className="text-gray-600">
+                    Please provide the following information to receive a customized quote
+                  </p>
+                </div>
+
+                {/* Product Name */}
+                <div>
+                  <label
+                    htmlFor="productName"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Product Name *
+                  </label>
+                  <select
+                    id="productName"
+                    name="productName"
+                    required
+                    value={formData.productName}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all bg-white"
+                  >
+                    <option value="">Select a product</option>
+                    {productOptions.map((productName, index) => (
+                      <option key={index} value={productName}>
+                        {productName}
+                      </option>
+                    ))}
+                    <option value="Engine Oils">Engine Oils (Category)</option>
+                    <option value="Industrial Lubricants">Industrial Lubricants (Category)</option>
+                    <option value="Hydraulic Fluids">Hydraulic Fluids (Category)</option>
+                    <option value="Gear Oils">Gear Oils (Category)</option>
+                    <option value="Greases">Greases (Category)</option>
+                    <option value="Specialty Lubricants">Specialty Lubricants (Category)</option>
+                    <option value="Other">Other / Custom Product</option>
+                  </select>
+                  {productSlug && (
+                    <p className="mt-2 text-sm text-[#f78a24]">
+                      ✓ Product pre-selected from product page
+                    </p>
+                  )}
+                </div>
+
+                {/* Quantity */}
+                <div>
+                  <label
+                    htmlFor="quantity"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Quantity *
+                  </label>
+                  <input
+                    type="text"
+                    id="quantity"
+                    name="quantity"
+                    required
+                    value={formData.quantity}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all"
+                    placeholder="e.g., 100 units, 50 cartons, 500 litres"
+                  />
+                  <p className="mt-2 text-sm text-gray-500">
+                    Please specify quantity and unit (units, cartons, litres, etc.)
+                  </p>
+                </div>
+
+                {/* Location */}
+                <div>
+                  <label
+                    htmlFor="location"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Location *
+                  </label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    required
+                    value={formData.location}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all"
+                    placeholder="City, State"
+                  />
+                </div>
+
+                {/* Company Name */}
+                <div>
+                  <label
+                    htmlFor="companyName"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Company Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="companyName"
+                    name="companyName"
+                    required
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all"
+                    placeholder="Enter your company name"
+                  />
+                </div>
+
+                {/* Phone and Email Grid */}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all"
+                      placeholder="+234 XXX XXX XXXX"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#f78a24] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#e67a14] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-8"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      Request Quote
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </>
+                  )}
+                </button>
+
+                <p className="text-sm text-gray-500 text-center mt-4">
+                  By submitting this form, you agree to be contacted by our sales team.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
+
+export default function GetAQuotePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#fefcfc] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f78a24] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <GetAQuoteForm />
+    </Suspense>
+  );
+}
+

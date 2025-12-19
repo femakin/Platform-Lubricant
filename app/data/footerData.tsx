@@ -1,4 +1,4 @@
-"use client";
+import { ReactNode } from "react";
 
 export interface FooterData {
   company: {
@@ -9,7 +9,7 @@ export interface FooterData {
   socialLinks: {
     name: string;
     url: string;
-    icon: React.ReactNode;
+    icon: ReactNode;
   }[];
   linkGroups: {
     title: string;
@@ -29,7 +29,7 @@ export interface FooterData {
 export const footerData: FooterData = {
   company: {
     name: "Platform Lead Limited",
-    registrationNumber: "",
+    registrationNumber: "1734615",
     description: "We provide comprehensive industrial solutions to power your business forward.",
   },
   socialLinks: [
@@ -90,7 +90,7 @@ export const footerData: FooterData = {
   },
   copyright: {
     companyName: "Platform Lead Limited",
-    year: 2022,
+    year: 2025,
   },
 };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface LogoProps {
@@ -12,7 +13,7 @@ export default function Logo({ className = "" }: LogoProps) {
 
   // Fallback text logo if images fail to load
   const FallbackLogo = () => (
-    <div className="flex items-center gap-3">
+    <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
       <div className="w-10 h-10 bg-[#f78a24] rounded flex items-center justify-center flex-shrink-0">
         <svg
           className="w-6 h-6 text-black"
@@ -32,7 +33,7 @@ export default function Logo({ className = "" }: LogoProps) {
         <div className="font-bold text-base sm:text-lg text-white">Platform Lubricant</div>
         <div className="text-xs text-gray-400">SOLUTIONS</div>
       </div>
-    </div>
+    </Link>
   );
 
   if (imageError) {
@@ -40,7 +41,7 @@ export default function Logo({ className = "" }: LogoProps) {
   }
 
   return (
-    <div className={`flex items-center ${className}`}>
+    <Link href="/" className={`flex items-center ${className} hover:opacity-80 transition-opacity`}>
       {/* Desktop Logo */}
       <div className="hidden md:block">
         <Image
@@ -65,7 +66,7 @@ export default function Logo({ className = "" }: LogoProps) {
           onError={() => setImageError(true)}
         />
       </div>
-    </div>
+    </Link>
   );
 }
 

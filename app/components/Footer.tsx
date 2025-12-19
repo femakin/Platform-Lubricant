@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className="bg-white border-t border-gray-200 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
           {/* Left Section - Logo and Social */}
           <div className="lg:col-span-1">
             <FooterLogo
@@ -21,9 +21,9 @@ export default function Footer() {
           </div>
 
           {/* Middle Section - Links */}
-          <div className="lg:col-span-1">
+          {/* <div className="lg:col-span-1">
             <FooterLinks linkGroups={footerData.linkGroups} />
-          </div>
+          </div> */}
 
           {/* Right Section - Contact */}
           <div className="lg:col-span-1">

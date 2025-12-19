@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Logo from "./Logo";
 
 export default function TopBar() {
@@ -6,7 +7,7 @@ export default function TopBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-[#f78a24] rounded flex items-center justify-center shrink-0">
               <svg
                 className="w-6 h-6 text-black"
@@ -26,7 +27,7 @@ export default function TopBar() {
               <div className="font-bold text-base sm:text-lg">Platform Lubricant</div>
               <div className="text-xs text-gray-400">SOLUTIONS</div>
             </div>
-          </div>
+          </Link>
 
           {/* <Logo /> */}
 

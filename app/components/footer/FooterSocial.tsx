@@ -1,3 +1,5 @@
+"use client";
+
 interface SocialLink {
   name: string;
   url: string;
