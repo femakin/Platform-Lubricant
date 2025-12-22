@@ -49,6 +49,22 @@ export default function ProductDetail({
             </p>
           </div>
 
+          {/* API Rating & Size */}
+          <div className="flex flex-wrap gap-4 justify-center mb-8">
+            {product.apiRating && (
+              <div className="bg-black/30 backdrop-blur-sm rounded-lg px-6 py-3">
+                <span className="text-white/80 text-sm">API Rating:</span>
+                <span className="text-white font-semibold text-lg ml-2">{product.apiRating}</span>
+              </div>
+            )}
+            {product.size && (
+              <div className="bg-black/30 backdrop-blur-sm rounded-lg px-6 py-3">
+                <span className="text-white/80 text-sm">Size:</span>
+                <span className="text-white font-semibold text-lg ml-2">{product.size}</span>
+              </div>
+            )}
+          </div>
+
           {/* Specifications */}
           {product.specifications && product.specifications.length > 0 && (
             <div className="bg-black/30 backdrop-blur-sm rounded-lg p-8 mb-8">
@@ -63,6 +79,46 @@ export default function ProductDetail({
                   >
                     <span className="text-[#f78a24]">•</span>
                     {spec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Applications */}
+          {product.applications && product.applications.length > 0 && (
+            <div className="bg-black/30 backdrop-blur-sm rounded-lg p-8 mb-8">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                Applications
+              </h2>
+              <ul className="space-y-3">
+                {product.applications.map((app, index) => (
+                  <li
+                    key={index}
+                    className="text-white/90 text-lg flex items-start gap-3"
+                  >
+                    <span className="text-[#f78a24] mt-1">✅</span>
+                    <span>{app}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Performance Benefits */}
+          {product.performanceBenefits && product.performanceBenefits.length > 0 && (
+            <div className="bg-black/30 backdrop-blur-sm rounded-lg p-8 mb-8">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                Performance Benefits
+              </h2>
+              <ul className="space-y-3">
+                {product.performanceBenefits.map((benefit, index) => (
+                  <li
+                    key={index}
+                    className="text-white/90 text-lg flex items-start gap-3"
+                  >
+                    <span className="text-[#f78a24] mt-1">✔</span>
+                    <span>{benefit}</span>
                   </li>
                 ))}
               </ul>

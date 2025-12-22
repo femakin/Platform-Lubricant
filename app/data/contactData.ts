@@ -5,7 +5,7 @@ export interface ContactInfo {
 }
 
 export const contactInfo: ContactInfo = {
-  phone: ["+234 XXX XXX XXXX", "+234 XXX XXX XXXX"],
+  phone: ["+234 723 123 1234", "+234 723 123 1234"],
   email: "akapooluwatimilehin@gmail.com",
   address: "4, Olubi street, Off Okunola Abass Street, Aare, Bodija, Ibadan Oyo State, Nigeria",
 };

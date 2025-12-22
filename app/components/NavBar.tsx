@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { products } from "../data/products";
 
 export default function NavBar() {
   const [isProductsHovered, setIsProductsHovered] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navLinks = [
     { href: "/#about", label: "About Us" },
@@ -15,6 +16,15 @@ export default function NavBar() {
     // { href: "/#blogs", label: "Blogs" },
     { href: "/#contact", label: "Contact Us" },
   ];
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <nav className="bg-black/80 backdrop-blur-sm text-white sticky top-0 z-50">
@@ -34,8 +44,19 @@ export default function NavBar() {
             {/* Our Products Dropdown */}
             <div
               className="relative"
-              onMouseEnter={() => setIsProductsHovered(true)}
-              onMouseLeave={() => setIsProductsHovered(false)}
+              onMouseEnter={() => {
+                if (timeoutRef.current) {
+                  clearTimeout(timeoutRef.current);
+                  timeoutRef.current = null;
+                }
+                setIsProductsHovered(true);
+              }}
+              onMouseLeave={() => {
+                // Add a small delay before closing to allow movement to dropdown
+                timeoutRef.current = setTimeout(() => {
+                  setIsProductsHovered(false);
+                }, 150);
+              }}
             >
               <Link
                 href="/"
@@ -59,19 +80,32 @@ export default function NavBar() {
                 </svg>
               </Link>
 
-              {/* Dropdown Menu */}
+              {/* Dropdown Menu - positioned with padding to bridge gap */}
               {isProductsHovered && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                  {products.map((product) => (
-                    <Link
-                      key={product.slug}
-                      href={`/products/${product.slug}`}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#f78a24] transition-colors"
-                      onClick={() => setIsProductsHovered(false)}
-                    >
-                      {product.name}
-                    </Link>
-                  ))}
+                <div 
+                  className="absolute top-full left-0 w-56 z-50 pt-2"
+                  onMouseEnter={() => {
+                    if (timeoutRef.current) {
+                      clearTimeout(timeoutRef.current);
+                      timeoutRef.current = null;
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setIsProductsHovered(false);
+                  }}
+                >
+                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                    {products.map((product) => (
+                      <Link
+                        key={product.slug}
+                        href={`/products/${product.slug}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#f78a24] transition-colors"
+                        onClick={() => setIsProductsHovered(false)}
+                      >
+                        {product.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
