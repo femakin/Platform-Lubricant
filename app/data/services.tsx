@@ -16,8 +16,7 @@ export const services: Service[] = [
       "High-quality lubricants for industrial machinery and equipment to ensure optimal performance and longevity.",
     category: "Industrial Services",
     number: 1,
-    backgroundImage:
-      "https://images.unsplash.com/photo-1516937941344-00b4e0337589?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    backgroundImage: "/assets/KEG-3.jpg",
     icon: (
       <svg
         className="w-6 h-6 text-[#f78a24]"
@@ -40,8 +39,7 @@ export const services: Service[] = [
       "Efficient supply chain management and distribution services to keep your operations running smoothly.",
     category: "Industrial Services",
     number: 2,
-    backgroundImage:
-      "https://images.unsplash.com/photo-1606964212858-c215029db704?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    backgroundImage: "/assets/KEG-7.jpg",
     icon: (
       <svg
         className="w-6 h-6 text-[#f78a24]"
@@ -64,8 +62,7 @@ export const services: Service[] = [
       "Reliable energy solutions and fuel management services to power your business operations.",
     category: "Industrial Services",
     number: 3,
-    backgroundImage:
-      "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    backgroundImage: "/assets/KEG-5.jpg",
     icon: (
       <svg
         className="w-6 h-6 text-[#f78a24]"
@@ -88,8 +85,7 @@ export const services: Service[] = [
       "Customized business solutions tailored to meet your specific industrial and operational needs.",
     category: "Industrial Services",
     number: 4,
-    backgroundImage:
-      "https://images.unsplash.com/photo-1668261584978-c800ae21b237?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D",
+    backgroundImage: "/assets/KEG-14.jpg",
     icon: (
       <svg
         className="w-6 h-6 text-[#f78a24]"

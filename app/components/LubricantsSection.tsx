@@ -5,8 +5,7 @@ import LubricantCard from "./LubricantCard";
 import SectionHeader from "./SectionHeader";
 import { lubricants } from "../data/lubricants";
 
-const backgroundImageUrl =
-  "https://images.unsplash.com/photo-1657270081105-d6a924b9ddab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const backgroundImageUrl = "/assets/keg set.png";
 
 export default function LubricantsSection() {
   return (
