@@ -75,7 +75,7 @@ export default function TopBar() {
               </div>
               <div>
                 <div className="text-xs text-gray-400">Email</div>
-                <div className="text-xs sm:text-sm font-medium">akapooluwatimilehin@gmail.com</div>
+                <div className="text-xs sm:text-sm font-medium">support@platformlead.com</div>
               </div>
             </div>
 

@@ -84,7 +84,7 @@ export const footerData: FooterData = {
     },
   ],
   contact: {
-    email: "akapooluwatimilehin@gmail.com",
+    email: "support@platformlead.com",
     address: "4, Olubi street, Off Okunola Abass Street, Aare, Bodija, Ibadan Oyo State Nigeria",
     bookCallLink: "#contact",
   },
