@@ -28,7 +28,7 @@ export const heroSlides: HeroSlide[] = [
       "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    headline: "Customized Industrial Solutionunsps",
+    headline: "Customized Industrial Solutions",
     description:
       "Customized business solutions tailored to meet your specific industrial and operational needs.",
     imageUrl:
