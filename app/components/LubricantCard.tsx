@@ -21,7 +21,7 @@ export default function LubricantCard({ lubricant }: LubricantCardProps) {
         {/* Content */}
         <div className="relative p-8 flex flex-col items-center text-center h-full min-h-[400px]">
           {/* Product Image */}
-          <div className="relative w-full max-w-[180px] h-[280px] mb-6 flex-shrink-0">
+          <div className="relative w-full max-w-[180px] h-[280px] mb-6 shrink-0">
             <Image
               src={lubricant.image}
               alt={lubricant.name}
@@ -43,7 +43,7 @@ export default function LubricantCard({ lubricant }: LubricantCardProps) {
         </div>
 
         {/* Hover effect overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#f78a24]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-[#f78a24]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
       </div>
     </Link>
   );

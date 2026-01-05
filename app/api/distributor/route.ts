@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,51 +25,90 @@ export async function POST(request: NextRequest) {
       !businessType
     ) {
       return NextResponse.json(
-        { error: "All required fields must be filled" },
+        { 
+          success: false,
+          error: "All required fields must be filled",
+          message: "Please fill in all required fields"
+        },
         { status: 400 }
       );
     }
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.ADMIN_EMAIL,
-        pass: process.env.ADMIN_EMAIL_PASSWORD,
-      },
-    });
+    // Get CSRF token from environment variable
+    const csrfToken = process.env.CSRF_TOKEN || "u9appu0TqntEnqHGRzoEI55BCEWeZLSqcv3b24Yugad9InsN2FOkyiW45Fl8wkFT";
 
-    // Email content
-    const mailOptions = {
-      from: process.env.ADMIN_EMAIL,
-      to: process.env.ADMIN_EMAIL,
-      subject: `Distributor Application: ${companyName}`,
-      html: `
-        <h2>New Distributor Application</h2>
-        <p><strong>Company Name:</strong> ${companyName}</p>
-        <p><strong>Contact Person:</strong> ${contactPerson}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Preferred Region:</strong> ${region}</p>
-        <p><strong>Business Address:</strong> ${address}</p>
-        <p><strong>Business Type:</strong> ${businessType}</p>
-        ${message ? `<p><strong>Additional Message:</strong></p><p>${message.replace(/\n/g, "<br>")}</p>` : ""}
-        <hr>
-        <p><small>Sent from Platform Lubricant Distributor Application Form</small></p>
-      `,
+    // Map form fields to API format
+    const apiPayload = {
+      company_name: companyName,
+      contact_person: contactPerson,
+      email_address: email,
+      phone_number: phone,
+      preferred_region: region,
+      business_type: businessType,
+      business_address: address,
+      additional_message: message || "",
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Call external API
+    const apiResponse = await fetch("https://api.platformlead.com/api/oil-gas/distributor-application/", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify(apiPayload),
+    });
 
+    const apiData = await apiResponse.json();
+
+    // Handle API response
+    if (!apiResponse.ok || !apiData.success) {
+      // Extract error message from API response
+      let errorMessage = apiData.message || "Failed to submit application. Please try again.";
+      
+      // If there are field-specific errors, format them
+      if (apiData.errors) {
+        const errorMessages = Object.entries(apiData.errors)
+          .map(([field, errors]) => {
+            const errorArray = Array.isArray(errors) ? errors : [errors];
+            return errorArray.join(", ");
+          })
+          .join(". ");
+        
+        if (errorMessages) {
+          errorMessage = errorMessages;
+        }
+      }
+
+      return NextResponse.json(
+        { 
+          success: false,
+          error: errorMessage,
+          message: apiData.message || errorMessage,
+          errors: apiData.errors
+        },
+        { status: apiResponse.status || 400 }
+      );
+    }
+
+    // Success response (201 Created)
     return NextResponse.json(
-      { message: "Application submitted successfully" },
-      { status: 200 }
+      { 
+        success: true,
+        message: apiData.message || "Application submitted successfully",
+        data: apiData.data
+      },
+      { status: apiResponse.status || 201 }
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error calling distributor API:", error);
     return NextResponse.json(
-      { error: "Failed to submit application. Please try again later." },
+      { 
+        success: false,
+        error: "Failed to submit application. Please try again later.",
+        message: "An unexpected error occurred. Please try again."
+      },
       { status: 500 }
     );
   }

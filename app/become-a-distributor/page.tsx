@@ -82,10 +82,29 @@ export default function BecomeDistributorPage() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to submit application");
+      // Check for API success flag or HTTP status
+      if (!response.ok || !data.success) {
+        // Handle API error response format
+        let errorMessage = data.message || data.error || "Failed to submit application";
+        
+        // If there are field-specific errors, format them nicely
+        if (data.errors) {
+          const errorMessages = Object.entries(data.errors)
+            .map(([field, errors]) => {
+              const errorArray = Array.isArray(errors) ? errors : [errors];
+              return `${field}: ${errorArray.join(", ")}`;
+            })
+            .join(". ");
+          
+          if (errorMessages) {
+            errorMessage = errorMessages;
+          }
+        }
+        
+        throw new Error(errorMessage);
       }
 
+      // Success - show success message
       setIsSubmitted(true);
       setFormData({
         companyName: "",

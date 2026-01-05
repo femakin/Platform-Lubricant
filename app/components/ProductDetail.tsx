@@ -16,7 +16,7 @@ export default function ProductDetail({
   return (
     <div className="min-h-screen">
       {/* Product Image Section */}
-      <section className="relative bg-gradient-to-br from-[#f78a24]/10 via-white to-white py-16 sm:py-24">
+      <section className="relative bg-linear-to-br from-[#f78a24]/10 via-white to-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
             {/* Product Image */}
@@ -35,7 +35,7 @@ export default function ProductDetail({
       </section>
 
       {/* Product Details Section */}
-      <section className="bg-gradient-to-br from-[#f78a24] to-[#e67a14] py-16 sm:py-20">
+      <section className="bg-linear-to-br from-[#f78a24] to-[#e67a14] py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Product Name */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-8 text-center">
@@ -127,7 +127,7 @@ export default function ProductDetail({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
+            {/* <Link
               href={`/get-a-quote?product=${product.slug}`}
               className="inline-flex items-center gap-2 bg-white text-[#f78a24] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl"
             >
@@ -145,7 +145,7 @@ export default function ProductDetail({
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </Link>
+            </Link> */}
             {nextProduct && (
               <Link
                 href={`/products/${nextProduct.slug}`}

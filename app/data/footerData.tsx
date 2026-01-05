@@ -84,13 +84,13 @@ export const footerData: FooterData = {
     },
   ],
   contact: {
-    email: "support@platformlead.com",
-    address: "4, Olubi street, Off Okunola Abass Street, Aare, Bodija, Ibadan Oyo State Nigeria",
+    email: "lubricants@platformlead.com",
+    address: "8 Magazine Road, Jericho, Dugbe, Ibadan",
     bookCallLink: "#contact",
   },
   copyright: {
     companyName: "Platform Lead Limited",
-    year: 2025,
+    year: 2026,
   },
 };
 

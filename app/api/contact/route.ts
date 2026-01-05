@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,52 +8,99 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!name || !email || !phone || !subject || !message) {
       return NextResponse.json(
-        { error: "All fields are required" },
+        { 
+          success: false,
+          error: "All fields are required",
+          message: "Please fill in all required fields"
+        },
         { status: 400 }
       );
     }
 
-    console.log("ADMIN_EMAIL", process.env.ADMIN_EMAIL);
-    console.log("ADMIN_EMAIL_PASSWORD", process.env.ADMIN_EMAIL_PASSWORD);
+    // Validate message length (API requires at least 10 characters)
+    if (message.length < 10) {
+      return NextResponse.json(
+        { 
+          success: false,
+          error: "Message must be at least 10 characters long",
+          message: "Please provide a more detailed message"
+        },
+        { status: 400 }
+      );
+    }
 
-    // Create transporter (configure with your Gmail credentials)
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.ADMIN_EMAIL,
-        pass: process.env.ADMIN_EMAIL_PASSWORD, // Use App Password for Gmail
-      },
-    });
+    // Get CSRF token from environment variable
+    const csrfToken = process.env.CSRF_TOKEN || "u9appu0TqntEnqHGRzoEI55BCEWeZLSqcv3b24Yugad9InsN2FOkyiW45Fl8wkFT";
 
-    // Email content
-    const mailOptions = {
-      from: process.env.ADMIN_EMAIL,
-      to: process.env.ADMIN_EMAIL,
-      subject: `Contact Form: ${subject}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
-        <hr>
-        <p><small>Sent from Platform Lubricant Contact Form</small></p>
-      `,
+    // Map form fields to API format
+    const apiPayload = {
+      full_name: name,
+      phone_number: phone,
+      email_address: email,
+      subject: subject,
+      message: message,
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Call external API
+    const apiResponse = await fetch("https://api.platformlead.com/api/oil-gas/contact/", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify(apiPayload),
+    });
 
+    const apiData = await apiResponse.json();
+
+    // Handle API response
+    if (!apiResponse.ok || !apiData.success) {
+      // Extract error message from API response
+      let errorMessage = apiData.message || "Failed to send message. Please try again.";
+      
+      // If there are field-specific errors, format them
+      if (apiData.errors) {
+        const errorMessages = Object.entries(apiData.errors)
+          .map(([field, errors]) => {
+            const errorArray = Array.isArray(errors) ? errors : [errors];
+            return errorArray.join(", ");
+          })
+          .join(". ");
+        
+        if (errorMessages) {
+          errorMessage = errorMessages;
+        }
+      }
+
+      return NextResponse.json(
+        { 
+          success: false,
+          error: errorMessage,
+          message: apiData.message || errorMessage,
+          errors: apiData.errors
+        },
+        { status: apiResponse.status || 400 }
+      );
+    }
+
+    // Success response
     return NextResponse.json(
-      { message: "Message sent successfully" },
-      { status: 200 }
+      { 
+        success: true,
+        message: apiData.message || "Message sent successfully",
+        data: apiData.data
+      },
+      { status: apiResponse.status || 200 }
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error calling contact API:", error);
     return NextResponse.json(
-      { error: "Failed to send message. Please try again later." },
+      { 
+        success: false,
+        error: "Failed to send message. Please try again later.",
+        message: "An unexpected error occurred. Please try again."
+      },
       { status: 500 }
     );
   }

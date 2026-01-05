@@ -33,29 +33,29 @@ export const services: Service[] = [
       </svg>
     ),
   },
-  {
-    title: "Logistics",
-    description:
-      "Efficient supply chain management and distribution services to keep your operations running smoothly.",
-    category: "Industrial Services",
-    number: 2,
-    backgroundImage: "/assets/KEG-7.jpg",
-    icon: (
-      <svg
-        className="w-6 h-6 text-[#f78a24]"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-        />
-      </svg>
-    ),
-  },
+  // {
+  //   title: "Logistics",
+  //   description:
+  //     "Efficient supply chain management and distribution services to keep your operations running smoothly.",
+  //   category: "Industrial Services",
+  //   number: 2,
+  //   backgroundImage: "/assets/KEG-7.jpg",
+  //   icon: (
+  //     <svg
+  //       className="w-6 h-6 text-[#f78a24]"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       viewBox="0 0 24 24"
+  //     >
+  //       <path
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeWidth={2}
+  //         d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+  //       />
+  //     </svg>
+  //   ),
+  // },
   {
     title: "Energy",
     description:

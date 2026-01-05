@@ -49,7 +49,7 @@ export default function HeroCarousel({
                 priority={index === 0}
               />
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/80"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/60 to-black/80"></div>
             </div>
 
             {/* Content */}
@@ -62,7 +62,7 @@ export default function HeroCarousel({
                   <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed">
                     {slide.description}
                   </p>
-                  <button className="bg-[#f78a24] text-black px-6 sm:px-8 py-2 sm:py-3 rounded flex items-center gap-2 hover:bg-[#e67a14] transition-colors font-medium text-base sm:text-lg">
+                  {/* <button className="bg-[#f78a24] text-black px-6 sm:px-8 py-2 sm:py-3 rounded flex items-center gap-2 hover:bg-[#e67a14] transition-colors font-medium text-base sm:text-lg">
                     Get a Quote
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
@@ -77,7 +77,7 @@ export default function HeroCarousel({
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

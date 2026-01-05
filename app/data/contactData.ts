@@ -5,8 +5,8 @@ export interface ContactInfo {
 }
 
 export const contactInfo: ContactInfo = {
-  phone: ["+234 723 123 1234", "+234 723 123 1234"],
-  email: "support@platformlead.com",
-  address: "4, Olubi street, Off Okunola Abass Street, Aare, Bodija, Ibadan Oyo State, Nigeria",
+  phone: ["+234 705 095 7744", "+234 708 596 1060"],
+  email: "lubricants@platformlead.com",
+  address: "8 Magazine Road, Jericho, Dugbe, Ibadan",
 };
 

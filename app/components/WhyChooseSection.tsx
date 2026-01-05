@@ -39,10 +39,10 @@ const IconComponents: Record<string, React.ReactNode> = {
 
 export default function WhyChooseSection() {
   return (
-    <section id="why-choose-us" className="bg-gradient-to-b from-white to-gray-50 py-16 sm:py-20 lg:py-24">
+    <section id="why-choose-us" className="bg-linear-to-b from-white to-gray-50 py-16 sm:py-20 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title="Why Choose Platform Lead Lubricants"
+          title="Why Choose Platform Lubricants"
           description="Excellence in every drop - trusted by industries across Nigeria"
         />
 

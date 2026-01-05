@@ -43,10 +43,29 @@ export default function ContactSection() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to send message");
+      // Check for API success flag or HTTP status
+      if (!response.ok || !data.success) {
+        // Handle API error response format
+        let errorMessage = data.message || data.error || "Failed to send message";
+        
+        // If there are field-specific errors, format them nicely
+        if (data.errors) {
+          const errorMessages = Object.entries(data.errors)
+            .map(([field, errors]) => {
+              const errorArray = Array.isArray(errors) ? errors : [errors];
+              return `${field}: ${errorArray.join(", ")}`;
+            })
+            .join(". ");
+          
+          if (errorMessages) {
+            errorMessage = errorMessages;
+          }
+        }
+        
+        throw new Error(errorMessage);
       }
 
+      // Success - show success message
       setIsSubmitted(true);
       setFormData({
         name: "",
@@ -87,7 +106,7 @@ export default function ContactSection() {
 
             {/* Phone Numbers */}
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-lg bg-[#f78a24]/10 flex items-center justify-center text-[#f78a24] flex-shrink-0">
+              <div className="w-12 h-12 rounded-lg bg-[#f78a24]/10 flex items-center justify-center text-[#f78a24] shrink-0">
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -118,7 +137,7 @@ export default function ContactSection() {
 
             {/* Email */}
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-lg bg-[#f78a24]/10 flex items-center justify-center text-[#f78a24] flex-shrink-0">
+              <div className="w-12 h-12 rounded-lg bg-[#f78a24]/10 flex items-center justify-center text-[#f78a24] shrink-0">
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -146,7 +165,7 @@ export default function ContactSection() {
 
             {/* Office Address */}
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-lg bg-[#f78a24]/10 flex items-center justify-center text-[#f78a24] flex-shrink-0">
+              <div className="w-12 h-12 rounded-lg bg-[#f78a24]/10 flex items-center justify-center text-[#f78a24] shrink-0">
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -168,7 +187,7 @@ export default function ContactSection() {
                 </svg>
               </div>
               <div>
-                <h4 className="font-semibold text-black mb-2">Office Address</h4>
+                <h4 className="font-semibold text-black mb-2">Address</h4>
                 <p className="text-gray-600 leading-relaxed">{contactInfo.address}</p>
               </div>
             </div>
@@ -299,18 +318,28 @@ export default function ContactSection() {
                     htmlFor="message"
                     className="block text-sm font-semibold text-gray-700 mb-2"
                   >
-                    Message *
+                    Message * {formData.message.length > 0 && (
+                      <span className="text-xs text-gray-500 font-normal">
+                        ({formData.message.length}/10 minimum)
+                      </span>
+                    )}
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     rows={5}
                     required
+                    minLength={10}
                     value={formData.message}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78a24] focus:border-transparent outline-none transition-all resize-none"
-                    placeholder="Tell us how we can help you..."
+                    placeholder="Tell us how we can help you... (minimum 10 characters)"
                   />
+                  {formData.message.length > 0 && formData.message.length < 10 && (
+                    <p className="text-sm text-red-600 mt-1">
+                      Message must be at least 10 characters long
+                    </p>
+                  )}
                 </div>
 
                 <button

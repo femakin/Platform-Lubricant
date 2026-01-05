@@ -35,7 +35,7 @@ export default function TestimonialSection({
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        {/* <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}
@@ -44,9 +44,9 @@ export default function TestimonialSection({
                 transform: index % 2 === 0 ? "rotate(-1deg)" : "rotate(1deg)",
               }}
             >
-              {/* Card */}
+    
               <div className="bg-linear-to-br from-gray-900 to-black rounded-2xl p-6 sm:p-8 lg:p-10 shadow-2xl hover:shadow-[#f78a24]/20 transition-all duration-300 hover:scale-[1.02] h-full flex flex-col">
-                {/* Profile Section */}
+        
                 <div className="flex items-start gap-4 sm:gap-6 mb-6">
                   <div className="relative shrink-0">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-4 ring-[#f78a24]/20 group-hover:ring-[#f78a24]/40 transition-all duration-300">
@@ -58,7 +58,7 @@ export default function TestimonialSection({
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    {/* Status indicator */}
+                   
                     <div className="absolute bottom-0 right-0 w-5 h-5 bg-[#f78a24] rounded-full border-4 border-gray-900" />
                   </div>
                   <div className="flex-1 pt-2">
@@ -74,7 +74,7 @@ export default function TestimonialSection({
                   </div>
                 </div>
 
-                {/* Testimonial Content */}
+              
                 <div className="flex-1 space-y-4">
                   <h4 className="text-white font-bold text-base sm:text-lg uppercase tracking-wide">
                     {testimonial.title}
@@ -84,7 +84,7 @@ export default function TestimonialSection({
                   </p>
                 </div>
 
-                {/* Quote Icon */}
+            
                 <div className="mt-6 pt-6 border-t border-gray-800">
                   <div className="flex items-center gap-2">
                     <svg
@@ -101,11 +101,11 @@ export default function TestimonialSection({
                 </div>
               </div>
 
-              {/* Decorative accent */}
+          
               <div className="absolute -z-10 top-4 right-4 w-full h-full bg-[#f78a24]/10 rounded-2xl blur-xl group-hover:bg-[#f78a24]/20 transition-all duration-300" />
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

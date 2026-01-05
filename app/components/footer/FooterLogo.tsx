@@ -17,7 +17,7 @@ export default function FooterLogo({
       <div className="flex items-start gap-3">
         <div className="shrink-0">
           <Image
-            src="/assets/logodesktop.png"
+            src="/logo.png"
             alt={`${companyName} Logo`}
             width={60}
             height={60}

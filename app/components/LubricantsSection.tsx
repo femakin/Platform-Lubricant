@@ -29,7 +29,7 @@ export default function LubricantsSection() {
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         <SectionHeader
-          title="Our Lubricants"
+          title="Our Products"
           description="Premium quality lubricants for all your industrial and automotive needs"
         />
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-12">
